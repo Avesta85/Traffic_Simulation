@@ -1,54 +1,47 @@
-from enum import Enum
-from lane import Lane
-from gateway import GateWay
+from core.types import VehiclePriority
+from core.types import VehicleStatus
 
-class VehicleStatus(Enum):
-    MOVING = 1
-    STOPPED = 2
-    
-class VehiclePriority(Enum):
-    NORMAL = 1
-    EMERGENCY = 2
+
 
 
 
 class Vehicle:
     def __init__(self ,
-                 des_gateway : GateWay ,
+                 des_gateway_id : int ,
                  id: int = -1,
                  priority : VehiclePriority = VehiclePriority.NORMAL ,
-                 status : VehicleStatus = VehicleStatus.INACTIVE,
+                 status : VehicleStatus = VehicleStatus.WAITING,
                  ):
-        self.__id = id
-        self.__current_lane : Lane
-        self.__lane_pos = 0.0
-        self.__priority = priority
-        self.__status= status
-        self.__des_gateway = des_gateway
+        self._id = id
+        self._current_lane_id : int | None = None 
+        self._lane_pos = 0.0
+        self._priority = priority
+        self._status= status
+        self._des_gateway = des_gateway_id
         
     
     # setter 
     def set_lane_pos(self,lane_pos)->None:
         if lane_pos < 0 or lane_pos > 1:
             raise ValueError("invalid lane position")
-        self.__lane_pos = lane_pos
+        self._lane_pos = lane_pos
     
     def set_state(self, status : VehicleStatus)-> None:
-        self.__status = status
+        self._status = status
     
     def set_priority(self , priority : VehiclePriority)->None:
-        self.__priority = priority
+        self._priority = priority
 
     
     # getter
     def get_lane_pos(self)-> float:
-        return self.__lane_pos
+        return self._lane_pos
     
     def get_status(self)-> VehicleStatus:
-        return self.__status
+        return self._status
     
     def get_priority(self)-> VehiclePriority:
-        return self.__priority
+        return self._priority
     
 
 
